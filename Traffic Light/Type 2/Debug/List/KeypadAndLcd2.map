@@ -1,0 +1,52 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+data                                                                              0x023A      10
+row                                                                               0x0244       4
+num                                                                               0x0248      16
+tempRed                                                                           0x0258       2
+yellow                                                                            0x025A       2
+tempYellow                                                                        0x025C       2
+green                                                                             0x025E       2
+tempGreen                                                                         0x0260       2
+k                                                                                 0x0262       2
+_base_y                                                                           0x0264       4
+_lcd_x                                                                            0x0268       1
+_lcd_y                                                                            0x0269       1
+_lcd_maxx                                                                         0x026A       1
+_seed                                                                             0x026B       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+i                                                                                 R5           1
+j                                                                                 R4           1
+index                                                                             R6,R7        2
+level                                                                             R8,R9        2
+show_level                                                                        R10,R11      2
+red                                                                               R12,R13      2
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+get_input                                                                         0x0011F     61
+main                                                                              0x0015C    541
+_lcd_write_nibble_G100                                                            0x00379     20
+_lcd_write_data                                                                   0x0038D     12
+lcd_gotoxy                                                                        0x00399     17
+lcd_clear                                                                         0x003AA     14
+lcd_putchar                                                                       0x003B8     32
+lcd_puts                                                                          0x003D8     17
+lcd_init                                                                          0x003E9     47
+ftrunc                                                                            0x00418     49
+floor                                                                             0x00449     19
+log                                                                               0x0045C    134
+exp                                                                               0x004E2    154
+pow                                                                               0x0057C     82
+put_buff_G102                                                                     0x005CE     64
+_print_G102                                                                       0x0060E    225
+sprintf                                                                           0x006EF     52

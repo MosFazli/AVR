@@ -1,0 +1,5 @@
+VERSION:3 SOURCE_TIMESTAMP:557CB667
+NODE:I LEVEL:0 LINE:24 "E:\Programs\cavr\inc\mega32.h"
+NODE:I LEVEL:0 LINE:25 "E:\Programs\cavr\inc\stdio.h"
+NODE:I LEVEL:0 LINE:28 "E:\Programs\cavr\inc\alcd.h"
+NODE:F LEVEL:0 LINE:32 "main(void)"

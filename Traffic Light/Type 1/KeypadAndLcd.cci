@@ -1,0 +1,13 @@
+VERSION:3 SOURCE_TIMESTAMP:5584B0A2
+NODE:I LEVEL:0 LINE:1 "E:\Programs\cavr\inc\mega16.h"
+NODE:I LEVEL:0 LINE:2 "E:\Programs\cavr\inc\delay.h"
+NODE:V LEVEL:0 LINE:5 "num1 -> R5"
+NODE:V LEVEL:0 LINE:5 "num2 -> R4"
+NODE:V LEVEL:0 LINE:6 "data -> RAM:????"
+NODE:V LEVEL:0 LINE:7 "row -> RAM:????"
+NODE:V LEVEL:0 LINE:8 "flag -> R7"
+NODE:V LEVEL:0 LINE:8 "i -> R6"
+NODE:V LEVEL:0 LINE:8 "num -> R9"
+NODE:F LEVEL:0 LINE:11 "get_input(void)"
+NODE:F LEVEL:0 LINE:36 "light(unsigned char num1,unsigned char num2,unsigned char flag)"
+NODE:F LEVEL:0 LINE:62 "main(void)"

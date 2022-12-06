@@ -1,0 +1,5 @@
+main DSTACK_USAGE:26 DSTACK_LEVEL:26 FILE:"KeypadAndLcd2.c" LINE:46
+pow DSTACK_USAGE:12 DSTACK_LEVEL:38 FILE:"E:\Programs\cavr\lib\math.lib" LINE:740
+exp DSTACK_USAGE:14 DSTACK_LEVEL:52 FILE:"E:\Programs\cavr\lib\math.lib" LINE:724
+floor DSTACK_USAGE:4 DSTACK_LEVEL:56 FILE:"E:\Programs\cavr\lib\math.lib" LINE:659
+ftrunc DSTACK_USAGE:4 DSTACK_LEVEL:60 FILE:"E:\Programs\cavr\lib\math.lib" LINE:544

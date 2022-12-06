@@ -1,0 +1,324 @@
+#include <mega16.h>
+#include <alcd.h>
+#include <delay.h>
+#include <math.h>
+#include <stdio.h>
+
+unsigned char data[10] = {0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90},
+row[] ={0xFE,0xFD,0xFb,0xF7} ,
+i,j,num[16];
+int index = 0;
+int level = 1, show_level = 1;
+int red = 20, tempRed = 0, yellow= 20, tempYellow = 0, green= 20, tempGreen = 0, k = 0;
+
+unsigned char get_input(){
+
+      char result = '*';
+
+      unsigned char column = 3;
+
+      while(1){
+            for (i = 0; i < 4; i++)
+            {
+                 PORTB = row[i];
+                 while(PINB.4 == 0) column = 0;
+                 while(PINB.5 == 0) column = 1;
+                 while(PINB.6 == 0) column = 2;
+                 while(column != 3){
+                 result = ( i * 3 + column);
+                 if(result == 10){
+                 result = -1;
+                 }else if(result == 9){
+                     if(index > 0){
+                     index--;
+                     result = 11;
+                     }
+                 }else if(result == 11){
+                     result = 13;
+                 }
+                 column = 3;
+                 return result;
+                 }
+            }
+      }
+}
+
+void main(void)
+{
+char inp, buffer[16];;
+int sum = 0, num1 = 0, num2 = 0, num3 = 0, temp_num2, counter = 1;
+int start_flag = 0;
+DDRB = 0x0F;
+PORTB = 0xFF;
+DDRC = 0xFF;
+PORTB = 0x00;
+DDRD = 0xFF;
+PORTD = 0x00;
+
+lcd_init(16);
+lcd_clear();
+lcd_gotoxy(0,0);
+lcd_puts("Hello,Welcome to");
+lcd_gotoxy(2,1);
+lcd_puts("TRAFFIC LIGHT");
+delay_ms(10);
+lcd_clear();
+
+
+
+while (1)
+      {
+      if(level == 1){
+          lcd_gotoxy(0,0);
+          lcd_puts("Enter Time Red");
+          lcd_gotoxy(0,1);
+          lcd_puts("max=600:");
+          inp = get_input();
+          if(inp == 11){
+            num[index] = ' ';
+          }else if(inp == 13){
+            lcd_clear();
+            lcd_gotoxy(3,0);
+            lcd_puts("Well Done !");
+            lcd_gotoxy(3,1);
+            lcd_puts("Next step");
+            level++;
+            for (k = 0; k < index; k++){
+                if(k == 0){
+                    sum = (num[k]-48);
+                }else{
+                    sum = sum * pow(10,1) + (num[k]-47);
+                }
+            }
+            delay_ms(10);
+            for (j=0; j <= index; j++)
+            num[j] = ' ';
+            index = 0;
+            red = sum;
+            lcd_clear();
+          }
+          else{
+
+            num[index] = (char) (inp + 49);
+            index++;
+
+          }
+          lcd_gotoxy(9,1);
+          lcd_puts(num);
+          }
+      else if(level == 2){
+          lcd_gotoxy(0,0);
+          lcd_puts("Enter Time Yelow");
+          lcd_gotoxy(0,1);
+          lcd_puts("max=600:");
+          inp = get_input();
+          if(inp == 11){
+            num[index] = ' ';
+          }else if(inp == 13){
+            lcd_clear();
+            lcd_gotoxy(3,0);
+            lcd_puts("Well Done !");
+            lcd_gotoxy(3,1);
+            lcd_puts("Next step");
+            level++;
+            delay_ms(10);
+            sum = 0;
+            for (k = 0; k < index; k++){
+                if(k == 0){
+                    sum = (num[k]-48);
+                }else{
+                    sum = sum * pow(10,1) + (num[k]-47);
+                }
+            }
+            yellow = sum;
+            for (j=0; j <= index; j++)
+            num[j] = ' ';
+            index = 0;
+            lcd_clear();
+          }
+          else{
+            num[index++] = (char) (inp + 49);
+          }
+          lcd_gotoxy(9,1);
+          lcd_puts(num);
+       }
+       else if(level == 3){
+          lcd_gotoxy(0,0);
+          lcd_puts("Enter Time Green");
+          lcd_gotoxy(0,1);
+          lcd_puts("max=600:");
+          inp =  get_input();
+          if(inp == 11){
+            num[index] = ' ';
+          }else if(inp == 13){
+            level++;
+            delay_ms(10);
+            sum = 0;
+            for (k = 0; k < index; k++){
+                if(k == 0){
+                    sum = (num[k]-48);
+                }else{
+                    sum = sum * pow(10,1) + (num[k]-47);
+                }
+            }
+            green = sum;
+            for (j=0; j <= index; j++)
+            num[j] = ' ';
+            index = 0;
+            lcd_clear();
+            lcd_gotoxy(0,1);
+            lcd_puts("All right");
+            lcd_gotoxy(0,0);
+            lcd_puts("press button");
+          }
+          else{
+            num[index++] = (char) (inp + 49);
+          }
+          lcd_gotoxy(9,1);
+          lcd_puts(num);
+       }
+
+       else if(level == 4){
+            if(PINB.7 == 0){
+              if(start_flag == 0) {
+                  start_flag = 1;
+                  delay_ms(100);
+                  tempRed = red;
+              }
+              else{
+                  start_flag = 0;
+                  delay_ms(100);
+              }
+            }
+                if(show_level == 1 && start_flag == 1){
+                    lcd_clear();
+                    lcd_gotoxy(1,0);
+                    lcd_puts("Counting Red");
+                    lcd_gotoxy(3,1);
+                    sprintf(buffer,"%d / %d",counter++, red);
+                    lcd_puts(buffer);
+                    tempYellow = yellow;
+
+                    num3 = tempRed / 100;
+                    temp_num2 = tempRed % 100;
+                    num2 = temp_num2 / 10;
+                    num1 = temp_num2 % 10;
+
+                  for(j = 0 ; j < 25 ; j++){
+
+                    PORTC = 0x11;
+                    PORTD = data[0];
+                    delay_ms(3);
+
+                    PORTC = 0x21;
+                    PORTD = data[num3];
+                    delay_ms(3);
+
+                    PORTC = 0x41;
+                    PORTD = data[num2];
+                    delay_ms(3);
+
+                    PORTC = 0x81;
+                    PORTD = data[num1];
+                    delay_ms(3);
+
+
+                  }
+
+                  tempRed--;
+                  if(tempRed == 0){
+                  show_level++;
+                  counter = 1;
+                  }
+
+              }
+
+              if(show_level == 2 && start_flag == 1){
+                    lcd_clear();
+                    lcd_gotoxy(1,0);
+                    lcd_puts("Counting yellow");
+                    lcd_gotoxy(3,1);
+                    sprintf(buffer,"%d / %d",counter++, yellow);
+                    lcd_puts(buffer);
+                    tempGreen = green;
+
+                    num3 = tempYellow / 100;
+                    temp_num2 = tempYellow % 100;
+                    num2 = temp_num2 / 10;
+                    num1 = temp_num2 % 10;
+
+                  for(j = 0 ; j < 25 ; j++){
+
+                    PORTC = 0x12;
+                    PORTD = data[0];
+                    delay_ms(3);
+
+                    PORTC = 0x22;
+                    PORTD = data[num3];
+                    delay_ms(3);
+
+                    PORTC = 0x42;
+                    PORTD = data[num2];
+                    delay_ms(3);
+
+                    PORTC = 0x82;
+                    PORTD = data[num1];
+                    delay_ms(3);
+
+
+                  }
+
+                  tempYellow--;
+                  if(tempYellow == 0){
+                  show_level++;
+                  counter = 1;
+                  }
+
+              }
+
+              if(show_level == 3 && start_flag == 1){
+                    lcd_clear();
+                    lcd_gotoxy(1,0);
+                    lcd_puts("Counting green");
+                    lcd_gotoxy(3,1);
+                    sprintf(buffer,"%d / %d",counter++, green);
+                    lcd_puts(buffer);
+                    tempRed = red;
+
+                    num3 = tempGreen / 100;
+                    temp_num2 = tempGreen % 100;
+                    num2 = temp_num2 / 10;
+                    num1 = temp_num2 % 10;
+
+                  for(j = 0 ; j < 25 ; j++){
+
+                    PORTC = 0x14;
+                    PORTD = data[0];
+                    delay_ms(3);
+
+                    PORTC = 0x24;
+                    PORTD = data[num3];
+                    delay_ms(3);
+
+                    PORTC = 0x44;
+                    PORTD = data[num2];
+                    delay_ms(3);
+
+                    PORTC = 0x84;
+                    PORTD = data[num1];
+                    delay_ms(3);
+
+
+                  }
+
+                  tempGreen--;
+                  if(tempGreen == 0){
+                  show_level = 1;
+                  counter = 1;
+                  }
+
+              }
+       }
+
+      }
+}
